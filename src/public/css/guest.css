@@ -1,0 +1,21 @@
+.bg-custom-cover {
+    background-image: url('/images/bg-img.png');
+    position: fixed;
+}
+
+#contact .bg-custom-cover {
+    background-image: url('/images/contact_bg-img.png');
+    position: fixed;
+}
+
+#teppahreinsun .bg-custom-cover {
+    background-image: url('/images/bilar_bg-img.png');
+}
+
+.height-custom-1 {
+    height: 1200px;
+}
+
+.height-custom-2 {
+    height: 650px;
+}

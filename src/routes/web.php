@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/', [GuestController::class, 'index'])->name('index');
+Route::get('/umokkur', [GuestController::class, 'contact'])->name('contact');
+Route::get('/skilmalar', [GuestController::class, 'termsOfService'])->name('termsOfService');
+Route::get('/mottuhreinsun', [GuestController::class, 'carpetCleaning'])->name('carpetCleaning');
+Route::get('/teppahreinsun', [GuestController::class, 'teppahreinsun'])->name('teppahreinsun');
+Route::get('/djuphreinsun', [GuestController::class, 'deepCleaning'])->name('deepCleaning');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
