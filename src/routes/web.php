@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ServiceTypeController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProfileController;
+use App\Models\ServiceType;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +28,10 @@ Route::get('/skilmalar', [GuestController::class, 'termsOfService'])->name('term
 Route::get('/mottuhreinsun', [GuestController::class, 'carpetCleaning'])->name('carpetCleaning');
 Route::get('/teppahreinsun', [GuestController::class, 'teppahreinsun'])->name('teppahreinsun');
 Route::get('/djuphreinsun', [GuestController::class, 'deepCleaning'])->name('deepCleaning');
+Route::get('/leiga', [GuestController::class, 'machineRental'])->name('machineRental');
+Route::get('/leiga/{id}', [GuestController::class, 'singleMachine'])->name('singleMachine');
+Route::get('/bookService', [GuestController::class, 'bookService'])->name('bookService');
+Route::post('/bookService/calender', [GuestController::class, 'selectCalender'])->name('bookService.selectCalender');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -34,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('/products', ProductController::class);
+    Route::resource('/serviceTypes', ServiceTypeController::class);
 });
 
 require __DIR__.'/auth.php';

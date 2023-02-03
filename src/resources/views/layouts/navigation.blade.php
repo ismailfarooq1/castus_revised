@@ -19,6 +19,20 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products')">
+                        {{ __('Products') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('serviceTypes.index')" :active="request()->routeIs('serviceTypes')">
+                        {{ __('Service Types') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
                         {{ __('Register') }}
                     </x-nav-link>

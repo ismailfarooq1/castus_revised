@@ -12,10 +12,10 @@
             <div class="lg:flex flex-grow items-center bg-white lg:bg-transparent lg:shadow-none hidden lg:rounded-none rounded-lg" id="example-collapse-navbar">
                 <ul class="flex flex-col lg:flex-row list-none lg:ml-auto sm:py-6 sm:text-lg px-10">
                     <li class="flex items-center">
-                        <a class="lg:text-white lg:px-10 py-2" href="{{ route('index') }}"><span class="">Heim</span></a>
+                        <a class="lg:text-white lg:px-10 py-2 text-shadow-custom-1" href="{{ route('index') }}"><span class="">Heim</span></a>
                     </li>
                     <li class="flex items-center">
-                        <button onclick="toggleDropDown('dropdownNavbar')" id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 font-medium lg:text-white md:p-0 md:w-auto lg:px-10">
+                        <button onclick="toggleDropDown('dropdownNavbar')" id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 font-medium lg:text-white md:p-0 md:w-auto lg:px-10 text-shadow-custom-1">
                             Þjónusta
                             <svg class="w-4 h-4 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -37,10 +37,10 @@
                         </div>
                     </li>
                     <li class="flex items-center">
-                        <a class="lg:text-white lg:px-10 py-2" href=""><span class="">Vélaleiga</span></a>
+                        <a class="lg:text-white lg:px-10 py-2 text-shadow-custom-1" href="{{ route('machineRental') }}"><span class="">Vélaleiga</span></a>
                     </li>
                     <li class="flex items-center">
-                        <a class="lg:text-white lg:px-10 py-2" href="{{ route('contact') }}"><span class="">Um Castus</span></a>
+                        <a class="lg:text-white lg:px-10 py-2 text-shadow-custom-1" href="{{ route('contact') }}"><span class="">Um Castus</span></a>
                     </li>
                 </ul>
             </div>
