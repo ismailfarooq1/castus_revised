@@ -18,4 +18,9 @@ class Product extends Model
     {
         return $this->hasMany(ServiceProduct::class);
     }
+
+    public function productDates()
+    {
+        return $this->hasMany(ProductDate::class);
+    }
 }

@@ -32,8 +32,7 @@ class ServiceTypeController extends Controller
      */
     public function create()
     {
-        $products = Product::get();
-        return view('admin.serviceType.create', ['products' => $products]);
+        return view('admin.serviceType.create');
     }
 
     /**
@@ -44,10 +43,11 @@ class ServiceTypeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
 
         $request->validate([
-            'title' => 'required'
+            'title' => 'required',
+            'short_description' => 'required',
+            'long_description' => 'required'
         ]);
 
         $serviceType = new ServiceType();
@@ -56,46 +56,6 @@ class ServiceTypeController extends Controller
         $serviceType->long_description = $request->long_description;
 
         $serviceType->save();
-
-        if (isset($request->service_class_title) && isset($request->service_class_description)) {
-            foreach ($request->service_class_title as $key => $serviceClassTitle) {
-                $serviceClass = new ServiceClass();
-                $serviceClass->service_type_id = $serviceType->id;
-                $serviceClass->title = $serviceClassTitle;
-                $serviceClass->description = $request->service_class_description[$key];
-                $serviceClass->save();
-
-                if (isset($request->service_array_title) && isset($request->service_array_price) && isset($request->service_array_description)) {
-                    foreach ($request->service_array_title[$key] as $keyService => $serviceTitle) {
-
-                        $service = new Service();
-                        $service->service_class_id = $serviceClass->id;
-                        $service->title = $serviceTitle;
-                        $service->price = $request->service_array_price[$key][$keyService];
-                        $service->description = $request->service_array_description[$key][$keyService];
-
-                        $service->save();
-
-                        if (isset($request->service_products[$key])) {
-                            foreach ($request->service_products[$key][$keyService] as $productId) {
-
-                                $product = Product::find($productId);
-
-                                if (!$product) {
-                                    continue;
-                                }
-
-                                $serviceProduct = new ServiceProduct();
-                                $serviceProduct->service_id = $service->id;
-                                $serviceProduct->product_id = $product->id;
-
-                                $serviceProduct->save();
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         return redirect()->route('serviceTypes.index')->with('success', 'Service Type added');
     }
@@ -119,21 +79,7 @@ class ServiceTypeController extends Controller
      */
     public function edit($id)
     {
-        $serviceType = ServiceType::with([
-            'serviceClasses' => function ($query) {
-                return $query->with([
-                    'services' => function ($nestedQueryOne) {
-                        return $nestedQueryOne->with([
-                            'serviceProducts' => function ($nestedQueryTwo) {
-                                return $nestedQueryTwo->with('product');
-                            }
-                        ]);
-                    }
-                ]);
-            }
-        ])
-            ->find($id);
-
+        $serviceType = ServiceType::find($id);
         return view('admin.serviceType.edit', ['serviceType' => $serviceType]);
     }
 
@@ -146,10 +92,10 @@ class ServiceTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-
         $request->validate([
-            'title' => 'required'
+            'title' => 'required',
+            'short_description' => 'required',
+            'long_description' => 'required'
         ]);
 
         $serviceType = ServiceType::find($id);
@@ -158,31 +104,6 @@ class ServiceTypeController extends Controller
         $serviceType->long_description = $request->long_description;
 
         $serviceType->save();
-
-        $serivceClassIds = $this->deleteServiceClass($id);
-        $this->deleteService($serivceClassIds);
-
-        if (isset($request->service_class_title) && isset($request->service_class_description)) {
-            foreach ($request->service_class_title as $key => $serviceClassTitle) {
-                $serviceClass = new ServiceClass();
-                $serviceClass->service_type_id = $serviceType->id;
-                $serviceClass->title = $serviceClassTitle;
-                $serviceClass->description = $request->service_class_description[$key];
-                $serviceClass->save();
-
-                if (isset($request->service_array_title) && isset($request->service_array_price) && isset($request->service_array_description)) {
-                    foreach ($request->service_array_title[$key] as $keyService => $serviceTitle) {
-                        $service = new Service();
-                        $service->service_class_id = $serviceClass->id;
-                        $service->title = $serviceTitle;
-                        $service->price = $request->service_array_price[$key][$keyService];
-                        $service->description = $request->service_array_description[$key][$keyService];
-
-                        $service->save();
-                    }
-                }
-            }
-        }
 
         return redirect()->route('serviceTypes.index')->with('success', 'Service Type added');
     }

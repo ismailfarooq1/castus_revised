@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductDate;
 use App\Models\ProductPicture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -41,6 +42,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'title' => 'required',
         ]);
@@ -76,6 +78,17 @@ class ProductController extends Controller
                 $productPicture->save();
             }
 
+            if (isset($request->product_dates) && count($request->product_dates)) {
+
+                foreach ($request->product_dates as $product_date_temp) {
+                    $productDate = new ProductDate();
+                    $productDate->product_id = $product->id;
+                    $productDate->day = $product_date_temp;
+
+                    $productDate->save();
+                }
+            }
+
             return redirect()->route('products.index')->with('success', 'Product Added Succesfully');
         }
 
@@ -103,6 +116,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)
             ->with('productPictures')
+            ->with('productDates')
             ->first();
 
         return view('admin.product.edit', ['product' => $product]);
@@ -124,7 +138,7 @@ class ProductController extends Controller
         $product = Product::where('id', $id)
             ->with('productPictures')
             ->first();
-        
+
         if (!$product) {
             return redirect()->route('products.index')->with('error', 'Could not find the product');
         }
@@ -144,7 +158,7 @@ class ProductController extends Controller
 
                 $pictuereIdsToDelete = [];
                 foreach ($product->productPictures as $productPicture) {
-                    Storage::disk('gcs')->delete(str_replace('https://storage.googleapis.com/castusphotos/', '' , $productPicture->path));
+                    Storage::disk('gcs')->delete(str_replace('https://storage.googleapis.com/castusphotos/', '', $productPicture->path));
 
                     $pictuereIdsToDelete[] = $productPicture->id;
                 }
@@ -172,10 +186,29 @@ class ProductController extends Controller
                 $productPicture->save();
             }
 
+            $this->deleteProductDates($product->id);
+
+            if (isset($request->product_dates) && count($request->product_dates)) {
+
+                foreach ($request->product_dates as $product_date_temp) {
+                    $productDate = new ProductDate();
+                    $productDate->product_id = $product->id;
+                    $productDate->day = $product_date_temp;
+
+                    $productDate->save();
+                }
+            }
+
             return redirect()->route('products.index')->with('success', 'Product Updated Succesfully');
         }
 
         return redirect()->route('products.index')->with('error', 'There was a problem updating the product.');
+    }
+
+    private function deleteProductDates($productId)
+    {
+        ProductDate::where('product_id', $productId)->delete();
+        return true;
     }
 
     /**

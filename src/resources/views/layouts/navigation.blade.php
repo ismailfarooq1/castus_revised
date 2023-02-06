@@ -33,6 +33,27 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('serviceClasses.index')" :active="request()->routeIs('serviceClasses')">
+                        {{ __('Services Classes') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('services.index')" :active="request()->routeIs('services')">
+                        {{ __('Services') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('customerRequests.index')" :active="request()->routeIs('customerRequests')">
+                        {{ __('Customer Requests') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
                         {{ __('Register') }}
                     </x-nav-link>

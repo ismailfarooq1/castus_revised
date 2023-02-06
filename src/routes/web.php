@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\CustomerRequestController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ServiceClassController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\ServiceTypeController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProfileController;
@@ -32,6 +35,8 @@ Route::get('/leiga', [GuestController::class, 'machineRental'])->name('machineRe
 Route::get('/leiga/{id}', [GuestController::class, 'singleMachine'])->name('singleMachine');
 Route::get('/bookService', [GuestController::class, 'bookService'])->name('bookService');
 Route::post('/bookService/calender', [GuestController::class, 'selectCalender'])->name('bookService.selectCalender');
+Route::post('/bookService/userInformation', [GuestController::class, 'userInformation'])->name('bookService.userInformation');
+Route::any('/bookService/complete', [GuestController::class, 'complete'])->name('bookService.complete');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -44,6 +49,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/products', ProductController::class);
     Route::resource('/serviceTypes', ServiceTypeController::class);
+    Route::resource('/services', ServiceController::class);
+    Route::resource('/serviceClasses', ServiceClassController::class);
+    Route::resource('/customerRequests', CustomerRequestController::class);
+
+    Route::any('/customerRequests/markReturned/{id}', [CustomerRequestController::class, 'markReturned'])->name('customerRequests.markReturned');
 });
 
 require __DIR__.'/auth.php';

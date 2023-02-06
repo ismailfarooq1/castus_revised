@@ -13,4 +13,9 @@ class Service extends Model
     {
         return $this->hasMany(ServiceProduct::class);
     }
+
+    public function serviceClass()
+    {
+        return $this->belongsTo(ServiceClass::class);
+    }
 }
